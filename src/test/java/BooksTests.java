@@ -1,4 +1,5 @@
 import datagenerator.BookDataGenerator;
+import datasetup.BookDataSetup;
 import dto.BookDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,10 +12,12 @@ import static org.assertj.core.api.Assertions.*;
 
 public class BooksTests {
 
+    private BookDataSetup bookDataSetup;
     private BookApiService bookApiService;
 
     @BeforeEach
     public void setup() {
+        bookDataSetup = new BookDataSetup();
         bookApiService = new BookApiService();
     }
 
@@ -46,10 +49,7 @@ public class BooksTests {
     @DisplayName("PUT - update book test with all fields")
     @Test
     public void updateBookTest() {
-        Integer randomBookId = bookApiService.getBooks().stream()
-                .map(BookDto::getId)
-                .findAny()
-                .orElseThrow(() -> new RuntimeException("No book find!"));
+        Integer randomBookId = bookDataSetup.getRandomBookId();
         BookDto updatedExpectedBook = BookDataGenerator.generateRandomBook();
         BookDto actualUpdatedBook = bookApiService.putBook(randomBookId, updatedExpectedBook);
 
@@ -57,6 +57,15 @@ public class BooksTests {
         assertThat(allBooks).contains(actualUpdatedBook);
     }
 
-
+    @DisplayName("DELETE - delete book by id test")
+    @Test
+    public void deleteBookTest() {
+        Integer randomBookId = bookDataSetup.getRandomBookId();
+        bookApiService.deleteBook(randomBookId);
+        List<BookDto> allBooks = bookApiService.getBooks();
+        assertThat(allBooks.stream()
+                .map(BookDto::getId)
+                .toList()).doesNotContain(randomBookId);
+    }
 
 }

@@ -74,4 +74,16 @@ public class BookApiService extends BaseApiService {
         return response.as(BookDto.class);
     }
 
+    public void deleteBook(Integer bookId) {
+        given(requestSpecification)
+                .basePath(BOOK_URL)
+                .pathParam("id", bookId)
+                .when()
+                .delete()
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+    }
+
 }
