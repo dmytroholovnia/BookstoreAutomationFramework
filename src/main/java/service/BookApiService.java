@@ -1,15 +1,15 @@
 package service;
 
 import core.BaseApiService;
-import dto.BookResponseDto;
-import io.restassured.RestAssured;
+import dto.BookDto;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
 import org.apache.http.HttpStatus;
-import org.checkerframework.checker.units.qual.N;
+import enums.Param;
 
 import java.util.List;
 
+import static enums.Param.*;
 import static io.restassured.RestAssured.given;
 
 @NoArgsConstructor
@@ -18,35 +18,74 @@ public class BookApiService extends BaseApiService {
     private static final String BOOKS_URL = "api/v1/Books";
     private static final String BOOK_URL = "/api/v1/Books/{id}";
 
-    public List<BookResponseDto> getBooks() {
+    public List<BookDto> getBooks() {
         Response response = given(requestSpecification)
                 .basePath(BOOKS_URL)
-                .log().all()
+                .log().uri()
                 .when()
                 .get()
                 .then()
-                .log().all()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .response();
 
-        return List.of(response.as(BookResponseDto[].class));
+        return List.of(response.as(BookDto[].class));
     }
 
-    public BookResponseDto getBook(Integer bookId) {
+    public BookDto getBook(Integer bookId) {
         Response response = given(requestSpecification)
                 .basePath(BOOK_URL)
-                .pathParam("id", bookId)
-                .log().all()
+                .pathParam(ID.getValue(), bookId)
+                .log().uri()
                 .when()
                 .get()
                 .then()
-                .log().all()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .response();
 
-        return response.as(BookResponseDto.class);
+        return response.as(BookDto.class);
+    }
+
+    public BookDto postBook(BookDto bookDto) {
+        Response response = given(requestSpecification)
+                .basePath(BOOKS_URL)
+                .body(bookDto)
+                .when()
+                .post()
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+
+        return response.as(BookDto.class);
+    }
+
+    public BookDto putBook(Integer bookId, BookDto bookDto) {
+        Response response = given(requestSpecification)
+                .basePath(BOOK_URL)
+                .pathParam(ID.getValue(), bookId)
+                .body(bookDto)
+                .when()
+                .put()
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+
+        return response.as(BookDto.class);
+    }
+
+    public void deleteBook(Integer bookId) {
+        given(requestSpecification)
+                .basePath(BOOK_URL)
+                .pathParam(ID.getValue(), bookId)
+                .when()
+                .delete()
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
     }
 
 }
