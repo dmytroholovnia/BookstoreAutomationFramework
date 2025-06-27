@@ -55,4 +55,30 @@ public class AuthorApiService extends BaseApiService {
         return response.as(AuthorDto.class);
     }
 
+    public AuthorDto putAuthor(Integer authorId, AuthorDto authorDto) {
+        Response response = given(requestSpecification)
+                .basePath(AUTHOR_URL)
+                .pathParam(Param.ID.getValue(), authorId)
+                .body(authorDto)
+                .when()
+                .put()
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+        return response.as(AuthorDto.class);
+    }
+
+    public void deleteAuthor(Integer authorId) {
+        given(requestSpecification)
+                .basePath(AUTHOR_URL)
+                .pathParam(Param.ID.getValue(), authorId)
+                .when()
+                .delete()
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+    }
+
 }

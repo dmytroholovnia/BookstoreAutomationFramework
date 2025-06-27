@@ -11,7 +11,7 @@ public class AuthorDataSetup {
         this.authorApiService = new AuthorApiService();
     }
 
-    public Integer getRandomAuthor() {
+    public Integer getRandomAuthorId() {
         var author = new RandomGenerator().getRandomElement(authorApiService.getAuthors());
         return author.getId();
     }
