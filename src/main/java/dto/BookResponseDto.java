@@ -1,11 +1,12 @@
 package dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookResponseDto {
@@ -14,7 +15,5 @@ public class BookResponseDto {
     private String description;
     private Integer pageCount;
     private String excerpt;
-    private String publishDate; //todo deserialize as time
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX")
-//    private OffsetDateTime publishDate;
+    private OffsetDateTime publishDate;
 }
