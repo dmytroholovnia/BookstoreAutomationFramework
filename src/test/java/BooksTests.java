@@ -18,4 +18,9 @@ public class BooksTests {
     public void getBooksTest() {
         List<BookResponseDto> actualBooks = bookApiService.getBooks();
     }
+
+    @Test
+    public void getBookTest() {
+        BookResponseDto actualBook = bookApiService.getBook(1);
+    }
 }
