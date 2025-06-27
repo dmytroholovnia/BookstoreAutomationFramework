@@ -5,9 +5,11 @@ import dto.BookDto;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
 import org.apache.http.HttpStatus;
+import enums.Param;
 
 import java.util.List;
 
+import static enums.Param.*;
 import static io.restassured.RestAssured.given;
 
 @NoArgsConstructor
@@ -33,7 +35,7 @@ public class BookApiService extends BaseApiService {
     public BookDto getBook(Integer bookId) {
         Response response = given(requestSpecification)
                 .basePath(BOOK_URL)
-                .pathParam("id", bookId)
+                .pathParam(ID.getValue(), bookId)
                 .log().uri()
                 .when()
                 .get()
@@ -62,7 +64,7 @@ public class BookApiService extends BaseApiService {
     public BookDto putBook(Integer bookId, BookDto bookDto) {
         Response response = given(requestSpecification)
                 .basePath(BOOK_URL)
-                .pathParam("id", bookId)
+                .pathParam(ID.getValue(), bookId)
                 .body(bookDto)
                 .when()
                 .put()
@@ -77,7 +79,7 @@ public class BookApiService extends BaseApiService {
     public void deleteBook(Integer bookId) {
         given(requestSpecification)
                 .basePath(BOOK_URL)
-                .pathParam("id", bookId)
+                .pathParam(ID.getValue(), bookId)
                 .when()
                 .delete()
                 .then()
