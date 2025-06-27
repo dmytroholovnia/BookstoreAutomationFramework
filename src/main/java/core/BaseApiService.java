@@ -7,6 +7,7 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 public abstract class BaseApiService {
@@ -22,6 +23,7 @@ public abstract class BaseApiService {
         return new RequestSpecBuilder()
                 .setConfig(getConfig())
                 .setBaseUri(BASE_URL)
+                .setContentType(ContentType.JSON)
                 .build();
     }
 

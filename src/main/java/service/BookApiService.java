@@ -21,11 +21,10 @@ public class BookApiService extends BaseApiService {
     public List<BookResponseDto> getBooks() {
         Response response = given(requestSpecification)
                 .basePath(BOOKS_URL)
-                .log().all()
+                .log().uri()
                 .when()
                 .get()
                 .then()
-                .log().all()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .response();
@@ -37,12 +36,24 @@ public class BookApiService extends BaseApiService {
         Response response = given(requestSpecification)
                 .basePath(BOOK_URL)
                 .pathParam("id", bookId)
-                .log().all()
+                .log().uri()
                 .when()
                 .get()
                 .then()
-                .log().all()
                 .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .response();
+
+        return response.as(BookResponseDto.class);
+    }
+
+    public BookResponseDto addBook(BookResponseDto bookDto) {
+        Response response = given(requestSpecification)
+                .basePath(BOOKS_URL)
+                .body(bookDto)
+                .when()
+                .post()
+                .then()
                 .extract()
                 .response();
 
