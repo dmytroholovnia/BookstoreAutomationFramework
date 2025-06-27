@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookResponseDto {
+public class BookDto {
     private Integer id;
     private String title;
     private String description;
