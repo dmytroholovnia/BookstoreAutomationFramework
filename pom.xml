@@ -10,8 +10,6 @@
 
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
-<!--        <maven.compiler.source>1.8</maven.compiler.source>-->
-<!--        <maven.compiler.target>1.8</maven.compiler.target>-->
         <allure.version>2.25.0</allure.version>
         <aspectj.version>1.9.22.1</aspectj.version>
     </properties>
@@ -59,10 +57,6 @@
                             junit.jupiter.execution.parallel.config.strategy = fixed
                             junit.jupiter.execution.parallel.config.fixed.parallelism = 2
                         </configurationParameters>
-<!--                        <systemPropertyVariables>-->
-<!--&lt;!&ndash;                            <allure.results.directory>target/allure-results</allure.results.directory>&ndash;&gt;-->
-<!--                            <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>-->
-<!--                        </systemPropertyVariables>-->
                     </properties>
                 </configuration>
             </plugin>
@@ -162,6 +156,11 @@
             <version>${allure.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-java-commons</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
