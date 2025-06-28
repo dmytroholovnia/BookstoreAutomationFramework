@@ -2,7 +2,6 @@ import datagenerator.AuthorDataGenerator;
 import datasetup.AuthorDataSetup;
 import dto.AuthorDto;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import service.AuthorApiService;
@@ -37,7 +36,6 @@ public class AuthorTests {
         assertThat(actualAuthor).isNotNull();
     }
 
-    @Disabled
     @DisplayName("POST - create new author")
     @Test
     public void postAuthorTest() {
@@ -52,7 +50,6 @@ public class AuthorTests {
         assertThat(allAuthors).contains(createdAuthor);
     }
 
-    @Disabled
     @DisplayName("PUT - update author")
     @Test
     public void putAuthorTest() {
@@ -64,7 +61,6 @@ public class AuthorTests {
         assertThat(allAuthors).contains(updatedAuthorDto);
     }
 
-    @Disabled
     @DisplayName("DELETE - delete author test")
     @Test
     public void deleteAuthorTest() {

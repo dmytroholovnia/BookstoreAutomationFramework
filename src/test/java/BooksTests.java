@@ -37,7 +37,6 @@ public class BooksTests {
         assertThat(actualBook).isNotNull();
     }
 
-    @Disabled
     @DisplayName("POST - add book test")
     @Test
     public void addBookTest() {
@@ -51,7 +50,6 @@ public class BooksTests {
         assertThat(allBooks).contains(expectedBook);
     }
 
-    @Disabled
     @DisplayName("PUT - update book test with all fields")
     @Test
     public void updateBookTest() {
@@ -63,7 +61,6 @@ public class BooksTests {
         assertThat(allBooks).contains(actualUpdatedBook);
     }
 
-    @Disabled
     @DisplayName("DELETE - delete book by id test")
     @Test
     public void deleteBookTest() {
