@@ -1,0 +1,57 @@
+name: Run tests
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: Build and run tests
+        run: mvn verify
+
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
+        with:
+          ref: master
+          path: master
+
+      - name: Show files
+        run: ls -R
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: master
+          allure_history: allure-history
+          allure_report: allure-report
+          allure_results: target/allure-results
+
+      - name: Publish test report
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: master
+          publish_dir: allure-history
+
+      - name: Report link
+        env:
+          OWNER: ${{ github.repository_owner }}
+          REPOSITORY_NAME: ${{ github.event.repository.name }}
+          RUN_ID: ${{ github.run_number}}
+        if: always()
+        run: echo "https://$OWNER.github.io/$REPOSITORY_NAME/$RUN_ID/"
