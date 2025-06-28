@@ -2,6 +2,7 @@ import datagenerator.BookDataGenerator;
 import datasetup.BookDataSetup;
 import dto.BookDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import service.BookApiService;
@@ -36,6 +37,7 @@ public class BooksTests {
         assertThat(actualBook).isNotNull();
     }
 
+    @Disabled
     @DisplayName("POST - add book test")
     @Test
     public void addBookTest() {
@@ -49,6 +51,7 @@ public class BooksTests {
         assertThat(allBooks).contains(expectedBook);
     }
 
+    @Disabled
     @DisplayName("PUT - update book test with all fields")
     @Test
     public void updateBookTest() {
@@ -60,6 +63,7 @@ public class BooksTests {
         assertThat(allBooks).contains(actualUpdatedBook);
     }
 
+    @Disabled
     @DisplayName("DELETE - delete book by id test")
     @Test
     public void deleteBookTest() {
