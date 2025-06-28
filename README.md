@@ -33,7 +33,7 @@ cd BookstoreAutomationFramework
 Automated tests are configured to run in a GitHub Actions workflow. You can trigger the workflow manually from the "Actions" tab in your repository.
 
 - You can trigger the workflow manually or view previous runs from the ["Run tests" workflow](https://github.com/dmytroholovnia/BookstoreAutomationFramework/actions/workflows/allure-report.yml) in the Actions tab.
-- [Link for latest report](https://dmytroholovnia.github.io/BookstoreAutomationFramework/)
+- [Open for latest Allure report](https://dmytroholovnia.github.io/BookstoreAutomationFramework/)
 - The workflow file: [.github/workflows/allure-report.yml](.github/workflows/allure-report.yml)
 - The workflow installs Java, builds the project, runs `mvn clean test`, and publishes an Allure report.
 
