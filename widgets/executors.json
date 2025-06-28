@@ -1,5 +1,1 @@
-[ {
-  "name" : "Maven",
-  "type" : "maven",
-  "buildName" : "BookstoreAutomationFramework"
-} ]
+[{"name":"Maven","type":"maven","buildName":"BookstoreAutomationFramework"}]

@@ -1,4 +1,1 @@
-{
-  "total" : 0,
-  "items" : [ ]
-}
+{"total":2,"items":[{"uid":"d69486449d272edcc7ac08168a582146","name":"AuthorTests","statistic":{"failed":0,"broken":0,"skipped":3,"passed":2,"unknown":0,"total":5}},{"uid":"4a680c92ff1ecf00cff8a90e54880d69","name":"BooksTests","statistic":{"failed":0,"broken":0,"skipped":3,"passed":2,"unknown":0,"total":5}}]}
