@@ -23,6 +23,7 @@ jobs:
         run: mvn clean test
 
       - name: Show Test Output
+        if: always()
         run: |
           echo "Contents of target/"
           ls -la target
