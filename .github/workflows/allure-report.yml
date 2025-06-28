@@ -38,15 +38,9 @@ jobs:
             echo "Skipping report generation: no allure-results."
           fi
 
-#      - name: Prepare for GitHub Pages
-#        run: |
-#          mkdir -p public
-#          cp -r target/site/allure-maven-plugin/* public/
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-#          publish_dir: ./public
           publish_dir: ./target/site/allure-maven-plugin
