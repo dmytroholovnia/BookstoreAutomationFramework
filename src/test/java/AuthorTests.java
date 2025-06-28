@@ -1,14 +1,22 @@
 import datagenerator.AuthorDataGenerator;
+import datagenerator.RandomGenerator;
 import datasetup.AuthorDataSetup;
 import dto.AuthorDto;
+import dto.ErrorDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import service.AuthorApiService;
 
 import java.util.List;
+import java.util.stream.Stream;
 
+import static org.apache.http.HttpStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.*;
 
 public class AuthorTests {
 
@@ -36,6 +44,33 @@ public class AuthorTests {
         assertThat(actualAuthor).isNotNull();
     }
 
+    @DisplayName("GET - get author with non-existent id")
+    @Test
+    public void getNonExistentAuthorTest() {
+        ErrorDto actualError = authorApiService.getAuthorExceptional(RandomGenerator.getBigNumber());
+        assertThat(actualError.getStatus()).isEqualTo(SC_NOT_FOUND);
+    }
+
+    @DisplayName("GET - get author with invalid format of id")
+    @ParameterizedTest(name = "Param: {0}")
+    @MethodSource("getInvalidParams")
+    public void getInvalidFormatAuthorIdTest(String invalidParam) {
+        ErrorDto actualError = authorApiService.getAuthorExceptional(invalidParam);
+        assertThat(actualError.getStatus()).isEqualTo(SC_BAD_REQUEST);
+    }
+
+    private static Stream<Arguments> getInvalidParams() {
+        return Stream.of(
+                of("x"),
+                of(" "),
+                of("-1"),
+                of("$"),
+                of("<script>alert(1)</script>"),
+                of("1=1"),
+                of("null")
+        );
+    }
+
     @DisplayName("POST - create new author")
     @Test
     public void postAuthorTest() {
@@ -48,6 +83,23 @@ public class AuthorTests {
 
         List<AuthorDto> allAuthors = authorApiService.getAuthors();
         assertThat(allAuthors).contains(createdAuthor);
+    }
+
+    @DisplayName("POST - create author with invalid payload")
+    @ParameterizedTest
+    @MethodSource("getInvalidAuthorPayloads")
+    public void postAuthorExceptionalTest(AuthorDto invalidAuthorDto) {
+        ErrorDto actualError = authorApiService.postAuthorExceptional(invalidAuthorDto);
+        assertThat(actualError.getStatus()).isEqualTo(SC_BAD_REQUEST);
+    }
+
+    private static Stream<Arguments> getInvalidAuthorPayloads() {
+        return Stream.of(
+                of(AuthorDataGenerator.emptyAuthor()),
+                of(AuthorDataGenerator.noIdAuthor()),
+                of(AuthorDataGenerator.noNameAuthor()),
+                of(AuthorDataGenerator.noBookIdAuthor())
+        );
     }
 
     @DisplayName("PUT - update author")

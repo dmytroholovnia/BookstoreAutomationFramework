@@ -13,6 +13,10 @@ public class RandomGenerator {
         return new Random().nextInt(1, 1000);
     }
 
+    public static int getBigNumber() {
+        return Integer.MAX_VALUE - new Random().nextInt(1000);
+    }
+
     public <T> T getRandomElement(List<T> list) {
         return list.get(new Random().nextInt(list.size()));
     }

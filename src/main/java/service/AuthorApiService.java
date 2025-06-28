@@ -2,6 +2,7 @@ package service;
 
 import core.BaseApiService;
 import dto.AuthorDto;
+import dto.ErrorDto;
 import enums.Param;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
@@ -33,11 +34,32 @@ public class AuthorApiService extends BaseApiService {
 
     @Step("GET request to " + AUTHOR_URL + " id: {0}")
     public AuthorDto getAuthor(Integer authorId) {
-        Response response = given(requestSpecification)
+        Response response = sendGetRequestToAuthor(authorId)
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract().response();
+        return response.as(AuthorDto.class);
+    }
+
+    public ErrorDto getAuthorExceptional(Object authorId) {
+        Response response = sendGetRequestToAuthor(authorId);
+        return response.as(ErrorDto.class);
+    }
+
+    private Response sendGetRequestToAuthor(Object authorId) {
+        return given(requestSpecification)
                 .basePath(AUTHOR_URL)
                 .pathParam(Param.ID.getValue(), authorId)
                 .when()
                 .get()
+                .then()
+                .extract()
+                .response();
+    }
+
+    @Step("POST request to " + AUTHORS_URL)
+    public AuthorDto postAuthor(AuthorDto authorDto) {
+        Response response = sendPostAuthorRequest(authorDto)
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .extract()
@@ -45,18 +67,20 @@ public class AuthorApiService extends BaseApiService {
         return response.as(AuthorDto.class);
     }
 
-    @Step("POST request to " + AUTHORS_URL)
-    public AuthorDto postAuthor(AuthorDto authorDto) {
-        Response response = given(requestSpecification)
+    public ErrorDto postAuthorExceptional(AuthorDto authorDto) {
+        Response response = sendPostAuthorRequest(authorDto);
+        return response.as(ErrorDto.class);
+    }
+
+    private Response sendPostAuthorRequest(AuthorDto authorDto) {
+        return given(requestSpecification)
                 .basePath(AUTHORS_URL)
                 .body(authorDto)
                 .when()
                 .post()
                 .then()
-                .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .response();
-        return response.as(AuthorDto.class);
     }
 
     @Step("PUT request to " + AUTHOR_URL)
