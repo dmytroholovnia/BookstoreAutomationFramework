@@ -55,7 +55,7 @@
                             junit.jupiter.execution.parallel.config.fixed.parallelism = 2
                         </configurationParameters>
                         <systemPropertyVariables>
-                            <allure.results.directory>allure-results</allure.results.directory>
+                            <allure.results.directory>target/allure-results</allure.results.directory>
                         </systemPropertyVariables>
                     </properties>
                 </configuration>
