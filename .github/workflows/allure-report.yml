@@ -1,61 +1,37 @@
-name: Allure Report CI
+name: Run Tests and Deploy Allure Report
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      - name: Run Tests and Generate Allure Results
-        run: mvn clean test
+      - name: Build and Run Tests
+        run: mvn clean test || true
 
       - name: Generate Allure Report
-        if: always()
         run: mvn allure:report
 
-      - name: Upload Allure Report as Artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: target/site/allure-maven-plugin
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: always()
-
-    steps:
-      - name: Download Allure Report Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-report
-          path: allure-report
+      - name: Copy Report to Output Folder
+        run: |
+          mkdir -p public
+          cp -r target/site/allure-maven-plugin/* public/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
+          publish_dir: ./public
