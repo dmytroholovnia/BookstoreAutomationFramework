@@ -32,7 +32,6 @@ public class AuthorApiService extends BaseApiService {
         return List.of(response.as(AuthorDto[].class));
     }
 
-    @Step("GET request to " + AUTHOR_URL + " id: {0}")
     public AuthorDto getAuthor(Integer authorId) {
         Response response = sendGetRequestToAuthor(authorId)
                 .then()
@@ -46,6 +45,7 @@ public class AuthorApiService extends BaseApiService {
         return response.as(ErrorDto.class);
     }
 
+    @Step("GET request to " + AUTHOR_URL + " id: {0}")
     private Response sendGetRequestToAuthor(Object authorId) {
         return given(requestSpecification)
                 .basePath(AUTHOR_URL)
@@ -57,7 +57,6 @@ public class AuthorApiService extends BaseApiService {
                 .response();
     }
 
-    @Step("POST request to " + AUTHORS_URL)
     public AuthorDto postAuthor(AuthorDto authorDto) {
         Response response = sendPostAuthorRequest(authorDto)
                 .then()
@@ -72,6 +71,7 @@ public class AuthorApiService extends BaseApiService {
         return response.as(ErrorDto.class);
     }
 
+    @Step("POST request to " + AUTHORS_URL)
     private Response sendPostAuthorRequest(AuthorDto authorDto) {
         return given(requestSpecification)
                 .basePath(AUTHORS_URL)
@@ -83,30 +83,46 @@ public class AuthorApiService extends BaseApiService {
                 .response();
     }
 
-    @Step("PUT request to " + AUTHOR_URL)
     public AuthorDto putAuthor(Integer authorId, AuthorDto authorDto) {
-        Response response = given(requestSpecification)
+        Response response = sendPutAuthorRequest(authorId, authorDto);
+        return response.as(AuthorDto.class);
+    }
+
+    public ErrorDto putAuthorExceptional(Object authorId, Object authorDto) {
+        Response response = sendPutAuthorRequest(authorId, authorDto);
+        return response.as(ErrorDto.class);
+    }
+
+    @Step("PUT request to " + AUTHOR_URL)
+    private Response sendPutAuthorRequest(Object authorId, Object authorDto) {
+        return given(requestSpecification)
                 .basePath(AUTHOR_URL)
                 .pathParam(Param.ID.getValue(), authorId)
                 .body(authorDto)
                 .when()
                 .put()
                 .then()
-                .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .response();
-        return response.as(AuthorDto.class);
+    }
+
+    public void deleteAuthor(Integer authorId) {
+        sendDeleteAuthorRequest(authorId);
+    }
+
+    public ErrorDto deleteAuthorExceptional(Object authorId) {
+        Response response = sendDeleteAuthorRequest(authorId);
+        return response.as(ErrorDto.class);
     }
 
     @Step("DELETE request to " + AUTHOR_URL + " by id: {0}")
-    public void deleteAuthor(Integer authorId) {
-        given(requestSpecification)
+    private Response sendDeleteAuthorRequest(Object authorId) {
+        return given(requestSpecification)
                 .basePath(AUTHOR_URL)
                 .pathParam(Param.ID.getValue(), authorId)
                 .when()
                 .delete()
                 .then()
-                .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .response();
     }

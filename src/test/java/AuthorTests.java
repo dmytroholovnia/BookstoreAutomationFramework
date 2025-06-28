@@ -113,6 +113,21 @@ public class AuthorTests {
         assertThat(allAuthors).contains(updatedAuthorDto);
     }
 
+    @DisplayName("PUT - update author with invalid payload")
+    @ParameterizedTest
+    @MethodSource("getInvalidParamsAndPayloads")
+    public void putAuthorExceptionalTest(String param, AuthorDto payload) {
+        ErrorDto actualError = authorApiService.putAuthorExceptional(param, payload);
+        assertThat(actualError.getStatus()).isEqualTo(SC_BAD_REQUEST);
+    }
+
+    private static Stream<Arguments> getInvalidParamsAndPayloads() {
+        return getInvalidParams()
+                .flatMap(idArg -> getInvalidAuthorPayloads()
+                        .map(authorArg -> Arguments.of(idArg.get()[0], authorArg.get()[0]))
+        );
+    }
+
     @DisplayName("DELETE - delete author test")
     @Test
     public void deleteAuthorTest() {
@@ -124,6 +139,14 @@ public class AuthorTests {
                 .map(AuthorDto::getId)
                 .toList())
                 .doesNotContain(authorId);
+    }
+
+    @DisplayName("DELETE - delete author with invalid param")
+    @ParameterizedTest
+    @MethodSource("getInvalidParams")
+    public void deleteAuthorExceptionTest(Object authorId) {
+        ErrorDto actualError = authorApiService.deleteAuthorExceptional(authorId);
+        assertThat(actualError.getStatus()).isEqualTo(SC_BAD_REQUEST);
     }
 
 }
