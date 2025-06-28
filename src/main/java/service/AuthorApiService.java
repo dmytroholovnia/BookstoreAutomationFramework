@@ -1,9 +1,9 @@
 package service;
 
 import core.BaseApiService;
-import io.qameta.allure.Step;
 import dto.AuthorDto;
 import enums.Param;
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
 import org.apache.http.HttpStatus;
