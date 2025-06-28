@@ -1,6 +1,7 @@
 package service;
 
 import core.BaseApiService;
+import io.qameta.allure.Step;
 import dto.AuthorDto;
 import enums.Param;
 import io.restassured.response.Response;
@@ -17,6 +18,7 @@ public class AuthorApiService extends BaseApiService {
     private static final String AUTHORS_URL = "/api/v1/Authors";
     private static final String AUTHOR_URL = "/api/v1/Authors/{id}";
 
+    @Step("GET request to " + AUTHORS_URL)
     public List<AuthorDto> getAuthors() {
         Response response = given(requestSpecification)
                 .basePath(AUTHORS_URL)
@@ -29,6 +31,7 @@ public class AuthorApiService extends BaseApiService {
         return List.of(response.as(AuthorDto[].class));
     }
 
+    @Step("GET request to " + AUTHOR_URL + " id: {0}")
     public AuthorDto getAuthor(Integer authorId) {
         Response response = given(requestSpecification)
                 .basePath(AUTHOR_URL)
@@ -42,6 +45,7 @@ public class AuthorApiService extends BaseApiService {
         return response.as(AuthorDto.class);
     }
 
+    @Step("POST request to " + AUTHORS_URL)
     public AuthorDto postAuthor(AuthorDto authorDto) {
         Response response = given(requestSpecification)
                 .basePath(AUTHORS_URL)
@@ -55,6 +59,7 @@ public class AuthorApiService extends BaseApiService {
         return response.as(AuthorDto.class);
     }
 
+    @Step("PUT request to " + AUTHOR_URL)
     public AuthorDto putAuthor(Integer authorId, AuthorDto authorDto) {
         Response response = given(requestSpecification)
                 .basePath(AUTHOR_URL)
@@ -69,6 +74,7 @@ public class AuthorApiService extends BaseApiService {
         return response.as(AuthorDto.class);
     }
 
+    @Step("DELETE request to " + AUTHOR_URL + " by id: {0}")
     public void deleteAuthor(Integer authorId) {
         given(requestSpecification)
                 .basePath(AUTHOR_URL)
