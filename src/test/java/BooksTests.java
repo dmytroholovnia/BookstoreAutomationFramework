@@ -25,12 +25,15 @@ public class BooksTests {
     @Test
     public void getBooksTest() {
         List<BookDto> actualBooks = bookApiService.getBooks();
+        assertThat(actualBooks).isNotNull();
     }
 
     @DisplayName("GET - book by id test")
     @Test
     public void getBookTest() {
-        BookDto actualBook = bookApiService.getBook(1);
+        var bookId = bookDataSetup.getRandomBookId();
+        BookDto actualBook = bookApiService.getBook(bookId);
+        assertThat(actualBook).isNotNull();
     }
 
     @DisplayName("POST - add book test")

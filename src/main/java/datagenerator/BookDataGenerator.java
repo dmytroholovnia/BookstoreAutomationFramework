@@ -7,13 +7,11 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Random;
 
-public class BookDataGenerator {
-
-    private static final Faker faker = new Faker();
+public class BookDataGenerator extends RandomGenerator {
 
     public static BookDto generateRandomBook() {
         return BookDto.builder()
-                .id(new Random().nextInt(5, 1000))
+                .id(RandomGenerator.getNumber())
                 .title(faker.book().title())
                 .description(faker.book().genre())
                 .pageCount(RandomGenerator.getNumber())
