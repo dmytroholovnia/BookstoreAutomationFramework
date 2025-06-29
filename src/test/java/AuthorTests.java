@@ -1,5 +1,6 @@
 import datagenerator.AuthorDataGenerator;
 import datagenerator.RandomGenerator;
+import datagenerator.TestDataProvider;
 import datasetup.AuthorDataSetup;
 import dto.AuthorDto;
 import dto.ErrorDto;
@@ -60,15 +61,9 @@ public class AuthorTests {
     }
 
     private static Stream<Arguments> getInvalidParams() {
-        return Stream.of(
-                of("x"),
-                of(" "),
-                of("-1"),
-                of("$"),
-                of("<script>alert(1)</script>"),
-                of("1=1"),
-                of("null")
-        );
+        return TestDataProvider.getInvalidParams()
+                .stream()
+                .map(Arguments::of);
     }
 
     @DisplayName("POST - create new author")
